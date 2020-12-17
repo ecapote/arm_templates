@@ -28,19 +28,19 @@
         }
     },
     "variables": {
-        "VmName": "[split(parameters('vmresourceid'),'/')[8]]",
-        "DaExtensionName": "[if(equals(toLower(parameters('osType')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
-        "DaExtensionType": "[if(equals(toLower(parameters('osType')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "vmname": "[split(parameters('vmresourceid'),'/')[8]]",
+        "DaExtensionName": "[if(equals(toLower(parameters('ostype')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "DaExtensionType": "[if(equals(toLower(parameters('ostype')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
         "DaExtensionVersion": "9.5",
-        "MmaExtensionName": "[if(equals(toLower(parameters('osType')), 'windows'), 'MMAExtension', 'OMSExtension')]",
-        "MmaExtensionType": "[if(equals(toLower(parameters('osType')), 'windows'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]",
-        "MmaExtensionVersion": "[if(equals(toLower(parameters('osType')), 'windows'), '1.0', '1.4')]"
+        "MmaExtensionName": "[if(equals(toLower(parameters('ostype')), 'windows'), 'MMAExtension', 'OMSExtension')]",
+        "MmaExtensionType": "[if(equals(toLower(parameters('ostype')), 'windows'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]",
+        "MmaExtensionVersion": "[if(equals(toLower(parameters('ostype')), 'windows'), '1.0', '1.4')]"
     },
     "resources": [
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2018-10-01",
-            "name": "[variables('VmName')]",
+            "name": "[variables('vmname')]",
             "location": "[parameters('vmlocation')]",
             "resources": [
                 {
@@ -49,7 +49,7 @@
                     "name": "[variables('DaExtensionName')]",
                     "location": "[parameters('vmlocation')]",
                     "dependsOn": [
-                        "[concat('Microsoft.Compute/VirtualMachines/', variables('VmName'))]"
+                        "[concat('Microsoft.Compute/VirtualMachines/', variables('vmname'))]"
                     ],
                     "properties": {
                         "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
@@ -64,7 +64,7 @@
                     "name": "[variables('MmaExtensionName')]",
                     "location": "[parameters('vmlocation')]",
                     "dependsOn": [
-                        "[concat('Microsoft.Compute/VirtualMachines/', variables('VmName'))]"
+                        "[concat('Microsoft.Compute/VirtualMachines/', variables('vmname'))]"
                     ],
                     "properties": {
                         "publisher": "Microsoft.EnterpriseCloud.Monitoring",
