@@ -1,0 +1,92 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmresourceid": {
+            "type": "String",
+            "defaultValue": "/subscriptions/8f7d862b-5995-401f-a514-7f9f1f9ebae5/resourceGroups/Erick_Capote/providers/Microsoft.Compute/virtualMachines/EC-VM-1608223379",
+            "metadata": {
+                "description": "VM Resource ID."
+            }
+        },
+        "vmlocation": {
+            "type": "String",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "The Virtual Machine Location."
+            }
+        },
+        "ostype": {
+            "type": "String",
+            "defaultValue": "Linux",
+            "metadata": {
+                "description": "OS Type, Example: Linux / Windows"
+            }
+        },
+        "workspaceresourceid": {
+            "type": "String",
+            "defaultValue": "/subscriptions/8f7d862b-5995-401f-a514-7f9f1f9ebae5/resourcegroups/erick_capote/providers/microsoft.operationalinsights/workspaces/ec-log-analytics-1607958783",
+            "metadata": {
+                "description": "Workspace Resource ID."
+            }
+        }
+    },
+    "variables": {
+        "vmname": "[split(parameters('vmresourceid'),'/')[8]]",
+        "DaExtensionName": "[if(equals(toLower(parameters('ostype')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "DaExtensionType": "[if(equals(toLower(parameters('ostype')), 'windows'), 'DependencyAgentWindows', 'DependencyAgentLinux')]",
+        "DaExtensionVersion": "9.5",
+        "MmaExtensionName": "[if(equals(toLower(parameters('ostype')), 'windows'), 'MMAExtension', 'OMSExtension')]",
+        "MmaExtensionType": "[if(equals(toLower(parameters('ostype')), 'windows'), 'MicrosoftMonitoringAgent', 'OmsAgentForLinux')]",
+        "MmaExtensionVersion": "[if(equals(toLower(parameters('ostype')), 'windows'), '1.0', '1.4')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('vmname')]",
+            "location": "[parameters('vmlocation')]",
+            "resources": [
+                {
+                    "type": "extensions",
+                    "apiVersion": "2019-12-01",
+                    "name": "[variables('DaExtensionName')]",
+                    "location": "[parameters('vmlocation')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/VirtualMachines/', variables('vmname'))]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
+                        "type": "[variables('DaExtensionType')]",
+                        "typeHandlerVersion": "[variables('DaExtensionVersion')]",
+                        "autoUpgradeMinorVersion": true
+                    }
+                },
+                {
+                    "type": "extensions",
+                    "apiVersion": "2018-10-01",
+                    "name": "[variables('MmaExtensionName')]",
+                    "location": "[parameters('vmlocation')]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Compute/VirtualMachines/', variables('vmname'))]"
+                    ],
+                    "properties": {
+                        "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                        "type": "[variables('MmaExtensionType')]",
+                        "typeHandlerVersion": "[variables('MmaExtensionVersion')]",
+                        "autoUpgradeMinorVersion": "true",
+                        "settings": {
+                            "workspaceId": "[reference(parameters('workspaceresourceid'), '2015-03-20').customerId]",
+                            "azureResourceId": "[parameters('vmresourceid')]",
+                            "stopOnMultipleConnections": "true"
+                        },
+                        "protectedSettings": {
+                            "workspaceKey": "[listKeys(parameters('workspaceresourceid'), '2015-03-20').primarySharedKey]"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {}
+}
