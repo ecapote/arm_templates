@@ -25,7 +25,7 @@
     },
     "parameters": {
       "location": {
-        "value": "eastus2"
+        "value": "eastus"
       }
     }
   }
