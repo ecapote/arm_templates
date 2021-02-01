@@ -4,6 +4,7 @@
   "parameters": {
         "workspaceName": {
             "type": "string",
+            "defaultValue":"test_ARM"
             "metadata": {
                 "description": "Required. Name for Log Analytics."
             }
