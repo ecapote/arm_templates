@@ -7,7 +7,7 @@
     "parameters": {
         "logAnalyticsWorkspaceName": {
             "type": "string",
-            "defaultValue": "NAME_HERE"
+            "defaultValue": "NAME_HERE",
             "metadata": {
                 "description": "Required. Name for Log Analytics."
             }
