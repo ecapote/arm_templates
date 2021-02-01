@@ -1,22 +1,32 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "resources": [
-      {
-          "type": "Microsoft.OperationalInsights/workspaces",
-          "name": "test-ARM",
-          "apiVersion": "2020-08-01",
-          "location": "eastus",
-          "properties": {
-              "sku": {
-                  "name": "Free"
-              },
-              "features": {
-                  "searchVersion": 1,
-                  "legacy": 0,
-                  "enableLogAccessUsingOnlyResourcePermissions": true
-              }
-          }
+    "properties": {
+    "mode": "Incremental",
+    "template": {
+        "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+        "contentVersion": "1.0.0.0",
+        "resources": [
+            {
+                "type": "Microsoft.OperationalInsights/workspaces",
+                "name": "test-ARM",
+                "apiVersion": "2020-08-01",
+                "location": "eastus",
+                "properties": {
+                    "sku": {
+                        "name": "Free"
+                    },
+                    "features": {
+                        "searchVersion": 1,
+                        "legacy": 0,
+                        "enableLogAccessUsingOnlyResourcePermissions": true
+                    }
+                }
+            }
+            ]
+    },
+    "parameters": {
+      "location": {
+        "value": "eastus2"
       }
-  ]
-}
+    }
+  }
+ }
