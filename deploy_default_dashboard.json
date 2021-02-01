@@ -1,0 +1,256 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+        "type": "string",
+        "defaultValue": "[subscription().subscriptionId]",
+        "metadata": {
+        "description": "Ths is the subscription UUID"
+        }
+        }
+    },
+    "resources": [{
+    "properties": {
+        "lenses": {
+        "0": {
+            "order": 0,
+            "parts": {
+            "0": {
+                "position": {
+                "x": 0,
+                "y": 0,
+                "colSpan": 5,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [],
+                "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                "settings": {
+                    "content": {
+                    "settings": {
+                        "content": "<img width='300' src='https://www.global.ntt/img/logo.png'/>",
+                        "title": "Logo Dashboard",
+                        "subtitle": "NTT logo",
+                        "markdownSource": 1,
+                        "markdownUri": null
+                    }
+                    }
+                }
+                }
+            },
+            "1": {
+                "position": {
+                "x": 5,
+                "y": 0,
+                "colSpan": 15,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "resourceType",
+                    "value": "Microsoft.Resources/subscriptions/resourcegroups",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "filter",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "scope",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "kind",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/BrowseResourceGroupPinnedPart"
+                }
+            },
+            "2": {
+                "position": {
+                "x": 0,
+                "y": 4,
+                "colSpan": 20,
+                "rowSpan": 6
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "sharedTimeRange",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "options",
+                    "value": {
+                        "chart": {
+                        "metrics": [
+                            {
+                            "resourceMetadata": {
+                                "region": "eastus",
+                                "resourceType": "microsoft.compute/virtualmachines",
+                                "subscription": {
+                                "subscriptionId": "[parameters('subscriptionId')]",
+                                "displayName": "[subscription().displayName]",
+                                "uniqueDisplayName": "[subscription().displayName]"
+                                }
+                            },
+                            "name": "Percentage CPU",
+                            "aggregationType": 4,
+                            "namespace": "microsoft.compute/virtualmachines",
+                            "metricVisualization": {
+                                "displayName": "Percentage CPU",
+                                "resourceDisplayName": "[subscription().displayName]"
+                            }
+                            }
+                        ],
+                        "title": "Avg Percentage CPU for [subscription().name] in East US region  by ResourceId",
+                        "titleKind": 1,
+                        "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                            "isVisible": true,
+                            "position": 2,
+                            "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                            "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                            },
+                            "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                            }
+                            }
+                        },
+                        "grouping": {
+                            "dimension": "Microsoft.ResourceId"
+                        },
+                        "timespan": {
+                            "relative": {
+                            "duration": 86400000
+                            },
+                            "showUTCTime": false,
+                            "grain": 1
+                        }
+                        }
+                    },
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+                "settings": {
+                    "content": {
+                    "options": {
+                        "chart": {
+                        "metrics": [
+                            {
+                            "resourceMetadata": {
+                                "region": "eastus",
+                                "resourceType": "microsoft.compute/virtualmachines",
+                                "subscription": {
+                                "subscriptionId": "[parameters('subscriptionId')]",
+                                "displayName": "[subscription().displayName]",
+                                "uniqueDisplayName": "[subscription().displayName]"
+                                }
+                            },
+                            "name": "Percentage CPU",
+                            "aggregationType": 4,
+                            "namespace": "microsoft.compute/virtualmachines",
+                            "metricVisualization": {
+                                "displayName": "Percentage CPU",
+                                "resourceDisplayName": "[subscription().displayName]"
+                            }
+                            }
+                        ],
+                        "title": "Avg Percentage CPU for all VM's in subscription",
+                        "titleKind": 1,
+                        "visualization": {
+                            "chartType": 2,
+                            "legendVisualization": {
+                            "isVisible": true,
+                            "position": 2,
+                            "hideSubtitle": false
+                            },
+                            "axisVisualization": {
+                            "x": {
+                                "isVisible": true,
+                                "axisType": 2
+                            },
+                            "y": {
+                                "isVisible": true,
+                                "axisType": 1
+                            }
+                            },
+                            "disablePinning": true
+                        },
+                        "grouping": {
+                            "dimension": "Microsoft.ResourceId",
+                            "sort": 2,
+                            "top": 10
+                        }
+                        }
+                    }
+                    }
+                },
+                "filters": {
+                    "MsPortalFx_TimeRange": {
+                    "model": {
+                        "format": "local",
+                        "granularity": "auto",
+                        "relative": "1440m"
+                    }
+                    }
+                }
+                }
+            }
+            }
+        }
+        },
+        "metadata": {
+        "model": {
+            "timeRange": {
+            "value": {
+                "relative": {
+                "duration": 24,
+                "timeUnit": 1
+                }
+            },
+            "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+            },
+            "filterLocale": {
+            "value": "en-us"
+            },
+            "filters": {
+            "value": {
+                "MsPortalFx_TimeRange": {
+                "model": {
+                    "format": "utc",
+                    "granularity": "auto",
+                    "relative": "24h"
+                },
+                "displayCache": {
+                    "name": "UTC Time",
+                    "value": "Past 24 hours"
+                },
+                "filteredPartIds": [
+                    "StartboardPart-MonitorChartPart-e5a91b33-83ed-4ee2-b45e-4f2a942862c1"
+                ]
+                }
+            }
+            }
+        }
+        }
+    },
+    "name": "EC-TESTY-TEST",
+    "type": "Microsoft.Portal/dashboards",
+    "location": "[resourceGroup().location]",
+    "tags": {
+        "hidden-title": "EC-TESTY-TEST"
+    },
+    "apiVersion": "2015-08-01-preview"
+    }]
+}
