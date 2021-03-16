@@ -3,7 +3,8 @@
     "contentVersion": "0.0.0.1",
     "parameters": {
         "orgPrefix": {
-        "type": "string",  
+        "type": "string",
+        "defaultValue": "test-org",
         "metadata": { 
             "description": "Enter preferred org prefix to append to workspace name."
             }
