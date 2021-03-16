@@ -924,11 +924,11 @@
       }
     }
   },
-  "name": "NTT-SkyView",
+  "name": "NTT-SkyView-VER22",
   "type": "Microsoft.Portal/dashboards",
   "location": "[parameters('location')]",
   "tags": {
-    "hidden-title": "NTT-SkyView"
+    "hidden-title": "NTT-SkyView-V22"
   },
   "apiVersion": "2015-08-01-preview"
     }
