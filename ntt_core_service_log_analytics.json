@@ -4,7 +4,6 @@
     "parameters": {
         "orgPrefix": {
         "type": "string",
-        "defaultValue": "test-org",
         "metadata": { 
             "description": "Enter preferred org prefix to append to workspace name."
             }
