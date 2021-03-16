@@ -2,7 +2,6 @@
     "properties": {
     "mode": "Incremental",
     "template": {
-        {
   "properties": {
     "lenses": {
       "0": {
@@ -880,15 +879,14 @@
       }
     }
   },
-  "name": "NTT-SkyView-TEST",
+  "name": "NTT-SkyView",
   "type": "Microsoft.Portal/dashboards",
   "location": "[resourceGroup().location]",
   "tags": {
     "hidden-title": "NTT-SkyView"
   },
   "apiVersion": "2015-08-01-preview"
-}
-    },
+},
     "parameters": {
         "location": {
         "value": "[resourceGroup().location]"
