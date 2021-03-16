@@ -1,4 +1,7 @@
 {
+    "properties": {
+    "mode": "Incremental",
+    "template": {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
@@ -478,4 +481,12 @@
   },
   "apiVersion": "2015-08-01-preview"
 }]
+}
+,
+    "parameters": {
+        "location": {
+        "value": "[resourceGroup().location]"
+        }
+    }
+    }
 }
