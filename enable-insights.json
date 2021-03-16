@@ -1,0 +1,937 @@
+    {
+        "properties": {
+        "mode": "Incremental",
+        "template":     {
+        "properties": {
+        "mode": "Incremental",
+        "template": {
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachineName": {
+        "type": "string",
+        "defaultValue": "VM_TEST_NAME",
+        "metadata": {
+            "description": "Name of the existing virtual machine to show in the dashboard"
+        }
+        },
+        "virtualMachineResourceGroup": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().name]",
+        "metadata": {
+            "description": "Name of the resource group that contains the virtual machine"
+        }
+        },
+        "dashboardName": {
+        "type": "string",
+        "defaultValue": "[guid(parameters('virtualMachineName'), parameters('virtualMachineResourceGroup'))]",
+        "metadata": {
+            "Description": "Resource name that Azure portal uses for the dashboard"
+        }
+        },
+        "dashboardDisplayName": {
+        "type": "string",
+        "defaultValue": "Simple VM Dashboard",
+        "metadata": {
+            "description": "Name of the dashboard to display in Azure portal"
+        }
+        },
+        "location": {
+        "type": "string",
+        "defaultValue": "eastus"
+        }
+    },
+    "resources": [
+        {
+        "type": "Microsoft.Portal/dashboards",
+        "apiVersion": "2019-01-01-preview",
+        "name": "[parameters('dashboardName')]",
+        "location": "[parameters('location')]",
+        "tags": {
+            "hidden-title": "[parameters('dashboardDisplayName')]"
+        },
+        "properties": {
+        "lenses": {
+        "0": {
+            "order": 0,
+            "parts": {
+            "0": {
+                "position": {
+                "x": 0,
+                "y": 0,
+                "colSpan": 3,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "All sub resources",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "// Count of all resources\ncount | project [\"No. of Resources\"]=Count",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "80b3dcf0-89b0-4d46-87eb-f5ac2cf8b0bf",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "1": {
+                "position": {
+                "x": 3,
+                "y": 0,
+                "colSpan": 3,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Total Compute Resources in Sub",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.compute/virtualmachines\" or type==\"microsoft.classiccompute/virtualmachines\"\n| summarize VMCount=count()\n| extend ['Total No VM']=VMCount\n| project ['Total No VM']",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "a85ed0f4-2763-40bb-8430-3dc5e1d6bbb1",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "2": {
+                "position": {
+                "x": 6,
+                "y": 0,
+                "colSpan": 3,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Total Number of Public IP Addresses",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.network/publicipaddresses\"\n| summarize ['Public IPs']=count()",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "5b5a1647-d6f9-407e-a52d-93acce1274fa",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "3": {
+                "position": {
+                "x": 9,
+                "y": 0,
+                "colSpan": 3,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "No. AppService Apps",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.web/sites\"\n| summarize SiteCount=count() \n|extend ['AppService Apps']=SiteCount\n| project ['AppService Apps']",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "97ea2c40-f93f-4296-a705-9e467b39a576",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "4": {
+                "position": {
+                "x": 12,
+                "y": 0,
+                "colSpan": 8,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [],
+                "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                "settings": {
+                    "content": {
+                    "settings": {
+                        "content": "<img width='300' src='https://www.global.ntt/img/logo.png'/>",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1
+                    }
+                    }
+                }
+                }
+            },
+            "5": {
+                "position": {
+                "x": 0,
+                "y": 2,
+                "colSpan": 20,
+                "rowSpan": 5
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Top10 Resources by Type",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "// top ten resource types by number of resources\nsummarize ResourceCount=count() by type\n| order by ResourceCount desc\n| take 10\n| project [\"Resource Type\"]=type, [\"Resource Count\"]=ResourceCount",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 1,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "d4dae9af-7c39-4bfb-9dc2-a0844d688846",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "6": {
+                "position": {
+                "x": 0,
+                "y": 7,
+                "colSpan": 20,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Resources per Region",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "summarize count() by location | project  location, total=count_| order by total desc \r\n| where total > 1",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 1,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "ff23782e-e5cf-4e8b-abe4-a9efdc3325ec",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "7": {
+                "position": {
+                "x": 0,
+                "y": 11,
+                "colSpan": 20,
+                "rowSpan": 1
+                },
+                "metadata": {
+                "inputs": [],
+                "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                "settings": {
+                    "content": {
+                    "settings": {
+                        "content": "<div>\n<span> <strong>Compute Resources</strong> </span>\n</div>",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1,
+                        "markdownUri": null
+                    }
+                    }
+                }
+                }
+            },
+            "8": {
+                "position": {
+                "x": 0,
+                "y": 12,
+                "colSpan": 3,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Total Compute Resources in Sub",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.compute/virtualmachines\" or type==\"microsoft.classiccompute/virtualmachines\"\n| summarize VMCount=count()\n| extend ['Total No VM']=VMCount\n| project ['Total No VM']",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "a85ed0f4-2763-40bb-8430-3dc5e1d6bbb1",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "9": {
+                "position": {
+                "x": 3,
+                "y": 12,
+                "colSpan": 6,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Type of VM Deployed in Sub",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type =~ 'Microsoft.Compute/virtualMachines' | project  SKU = tostring(properties.hardwareProfile.vmSize)| summarize count() by SKU",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 2,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "a44351e9-5647-432c-8dc8-74831396c791",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "10": {
+                "position": {
+                "x": 9,
+                "y": 12,
+                "colSpan": 6,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Virtual machines by location",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "Resources\n| where type =~ 'Microsoft.Compute/virtualMachines'\n| summarize count() by location",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 2,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "26111d1b-c6b5-4b42-92c2-fcb96977fdc9",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "11": {
+                "position": {
+                "x": 15,
+                "y": 12,
+                "colSpan": 5,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Count of VM by power state",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "Resources\r\n| where type == 'microsoft.compute/virtualmachines'\r\n| summarize count() by tostring(properties.extended.instanceView.powerState.code)",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 2,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "ab6182ec-2365-4659-9654-c5e21554aad0",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "12": {
+                "position": {
+                "x": 0,
+                "y": 16,
+                "colSpan": 20,
+                "rowSpan": 1
+                },
+                "metadata": {
+                "inputs": [],
+                "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                "settings": {
+                    "content": {
+                    "settings": {
+                        "content": "<div>\n<span> <strong>NETWORKING RESOURCES</strong>\n</span>\n</div>",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1,
+                        "markdownUri": null
+                    }
+                    }
+                }
+                }
+            },
+            "13": {
+                "position": {
+                "x": 0,
+                "y": 17,
+                "colSpan": 4,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Total Number of Public IP Addresses",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.network/publicipaddresses\"\n| summarize ['Public IPs']=count()",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "5b5a1647-d6f9-407e-a52d-93acce1274fa",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "14": {
+                "position": {
+                "x": 4,
+                "y": 17,
+                "colSpan": 4,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Number of Virtual Networks in Subscription",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.network/virtualnetworks\"or type == \"microsoft.classicnetwork/virtualnetworks\"\n| summarize ['Virtual networks']=count()",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "bcb924ec-8d7a-4cb5-ba86-fb180abcb611",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "15": {
+                "position": {
+                "x": 8,
+                "y": 17,
+                "colSpan": 4,
+                "rowSpan": 2
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "no of FW",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "resources\n|where type=='microsoft.network/azurefirewalls'\n|order by type\n| summarize FwCount=count() \n|extend ['Total Firewalls']=FwCount\n| project ['Total Firewalls']",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "ca99c08d-028a-44ba-abdd-6f9f003f0e9b",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "16": {
+                "position": {
+                "x": 0,
+                "y": 19,
+                "colSpan": 20,
+                "rowSpan": 6
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Virtual Network by Location",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.network/virtualnetworks\"or type == \"microsoft.classicnetwork/virtualnetworks\"\n|summarize count() by location \n|project location,total=count_| order by total desc \n| where total > 1|limit 15",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 1,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "742116a2-43b0-49a4-aab8-89915c545da6",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "17": {
+                "position": {
+                "x": 0,
+                "y": 25,
+                "colSpan": 20,
+                "rowSpan": 1
+                },
+                "metadata": {
+                "inputs": [],
+                "type": "Extension/HubsExtension/PartType/MarkdownPart",
+                "settings": {
+                    "content": {
+                    "settings": {
+                        "content": "<div>\n<span>\n<strong>Storage Resources</strong>\n</span>\n</div>",
+                        "title": "",
+                        "subtitle": "",
+                        "markdownSource": 1,
+                        "markdownUri": null
+                    }
+                    }
+                }
+                }
+            },
+            "18": {
+                "position": {
+                "x": 0,
+                "y": 26,
+                "colSpan": 3,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Total GB of deployed Disks",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.compute/disks\"\n| extend SizeGB = tolong(properties.diskSizeGB)\n| summarize ['Total Disk Size (GB)']=sum(SizeGB)",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "592ba23e-d863-46e7-aa59-51b001018bab",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+                "settings": {}
+                }
+            },
+            "19": {
+                "position": {
+                "x": 3,
+                "y": 26,
+                "colSpan": 5,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Storage Accounts by Type",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type =~ 'Microsoft.Storage/storageAccounts' | summarize count() by kind",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "value": 2,
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "e004cb07-deb8-41f4-966c-4521cdfd527d",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+                "settings": {}
+                }
+            },
+            "20": {
+                "position": {
+                "x": 8,
+                "y": 26,
+                "colSpan": 3,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Storage by State",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": "where type == \"microsoft.compute/disks\"\n| summarize DiskCount=count() by State=tostring(properties.diskState)\n| order by DiskCount desc\n| extend [\"Count (Disks)\"]=DiskCount\n| project State, [\"Count (Disks)\"]",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "3e996a70-9de6-4f5d-b6b7-27b6dfa3154e",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+                "settings": {}
+                }
+            },
+            "21": {
+                "position": {
+                "x": 11,
+                "y": 26,
+                "colSpan": 9,
+                "rowSpan": 4
+                },
+                "metadata": {
+                "inputs": [
+                    {
+                    "name": "partTitle",
+                    "value": "Storage Account by Status",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "query",
+                    "value": " where type == \"microsoft.storage/storageaccounts\"\n | summarize StorageCount=count() by PrimaryStatus=tostring(properties.statusOfPrimary), SecondaryStatus=tostring(properties.statusOfSecondary)\n | extend SecondaryStatus= iff(strlen(SecondaryStatus) == 0, \"No secondary\", SecondaryStatus)\n | extend ['Count (Storage accounts)']=StorageCount\n | project-away StorageCount",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "chartType",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "isShared",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "queryId",
+                    "value": "e1f61c5e-4065-4c40-a4e3-ddc09c6d947e",
+                    "isOptional": true
+                    },
+                    {
+                    "name": "formatResults",
+                    "isOptional": true
+                    }
+                ],
+                "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+                "settings": {}
+                }
+            }
+            }
+        }
+        },
+        "metadata": {
+        "model": {
+            "timeRange": {
+            "value": {
+                "relative": {
+                "duration": 24,
+                "timeUnit": 1
+                }
+            },
+            "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+            },
+            "filterLocale": {
+            "value": "en-us"
+            },
+            "filters": {
+            "value": {
+                "MsPortalFx_TimeRange": {
+                "model": {
+                    "format": "utc",
+                    "granularity": "auto",
+                    "relative": "24h"
+                },
+                "displayCache": {
+                    "name": "UTC Time",
+                    "value": "Past 24 hours"
+                },
+                "filteredPartIds": []
+                }
+            }
+            }
+        }
+        }
+    }
+   }
+    ]
+    }
+    }
+}
+
+    }
+}
