@@ -7,7 +7,7 @@ Requirements:
 
 Enable Insights
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/ecapote/arm_templates/main/azureDeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fecapote%2Farm_templates%2Fmain%2FazureDeploy.json)
 
 
 
